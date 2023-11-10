@@ -47,7 +47,7 @@ runs:
       id: cache-v160
       uses: actions/cache/restore@v3
       with:
-        path: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160
+        path: C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Microsoft/VC/v160
         key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}-v160
 
     # Set up the selected toolchain or compiler
@@ -102,7 +102,7 @@ runs:
       if: runner.os == 'Windows' && contains(inputs.compiler, 'intel') && steps.cache-v160.outputs.cache-hit != 'true'
       uses: actions/cache/save@v3
       with:
-        path: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160
+        path: C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Microsoft/VC/v160
         key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}-v160
 
     - name: Activate oneAPI
