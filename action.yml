@@ -28,7 +28,9 @@ runs:
       id: oneapi-root
       if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
       shell: bash
-      run: echo "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI" >> "$GITHUB_ENV"
+      run: |
+        echo "ONEAPI_ROOT=C:\Program Files (x86)\Intel\oneAPI" >> "$GITHUB_ENV"
+        echo "INTEL_KEY=HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Intel" >> "$GITHUB_ENV"
     - name: Get date
       if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
       id: get-date
@@ -42,7 +44,16 @@ runs:
         path: |
           ${{ env.ONEAPI_ROOT }}
           C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Microsoft/VC/v160
-        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}-vs2019-v160
+        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}-vs2019-v160-hive
+    - name: Restore Intel hive
+      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel') && steps.cache.outputs.cache-hit == 'true'
+      shell: pwsh
+      run: |
+        if (-Not (Test-Path -Path "Registry::$env:INTEL_KEY")) {
+          REG ADD "$env:INTEL_KEY"
+        }
+        Get-FileHash $env:ONEAPI_ROOT/Intel.hiv
+        REG RESTORE $env:INTEL_KEY $env:ONEAPI_ROOT/Intel.hiv /reg:64
 
     # Set up the selected toolchain or compiler
     - name: Setup toolchain
@@ -84,6 +95,13 @@ runs:
           echo "CXX=${CXX}" >> $GITHUB_ENV
         fi
 
+    # Req'd to use cmake -T <toolset-name> w/ a Visual Studio generator
+    - name: Store Intel hive
+      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel') && steps.cache.outputs.cache-hit != 'true'
+      shell: pwsh
+      run: |
+        REG SAVE $env:INTEL_KEY $env:ONEAPI_ROOT/Intel.hiv /reg:64
+        Get-FileHash $env:ONEAPI_ROOT/Intel.hiv
     # save oneAPI cache and activate environment
     - name: Save cache
       if: runner.os == 'Windows' && contains(inputs.compiler, 'intel') && steps.cache.outputs.cache-hit != 'true'
@@ -92,7 +110,7 @@ runs:
         path: |
           ${{ env.ONEAPI_ROOT }}
           C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Microsoft/VC/v160
-        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}-vs2019-v160
+        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}-vs2019-v160-hive
 
     - name: Activate oneAPI
       if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
