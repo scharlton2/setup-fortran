@@ -39,16 +39,10 @@ runs:
       id: cache
       uses: actions/cache/restore@v3
       with:
-        path: ${{ env.ONEAPI_ROOT }}
-        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}-vs2019
-
-    - name: Restore v160 cache
-      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
-      id: cache-v160
-      uses: actions/cache/restore@v3
-      with:
-        path: C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Microsoft/VC/v160
-        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}-v160
+        path: |
+          ${{ env.ONEAPI_ROOT }}
+          C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Microsoft/VC/v160
+        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}-vs2019-v160
 
     # Set up the selected toolchain or compiler
     - name: Setup toolchain
@@ -95,15 +89,10 @@ runs:
       if: runner.os == 'Windows' && contains(inputs.compiler, 'intel') && steps.cache.outputs.cache-hit != 'true'
       uses: actions/cache/save@v3
       with:
-        path: ${{ env.ONEAPI_ROOT }}
-        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}-vs2019
-
-    - name: Save v160 cache
-      if: runner.os == 'Windows' && contains(inputs.compiler, 'intel') && steps.cache-v160.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v3
-      with:
-        path: C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Microsoft/VC/v160
-        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}-v160
+        path: |
+          ${{ env.ONEAPI_ROOT }}
+          C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Microsoft/VC/v160
+        key: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}-vs2019-v160
 
     - name: Activate oneAPI
       if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
