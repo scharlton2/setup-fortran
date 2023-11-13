@@ -19,7 +19,7 @@ on:
 jobs:
   test:
     name: Test latest compiler versions
-    if: github.event_name != 'schedule'
+    if: github.event_name != 'schedule' && false
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -203,7 +203,7 @@ jobs:
 
   full_test:
     name: Full compatibility test
-    if: github.event_name == 'schedule'
+    if: github.event_name == 'schedule' || true
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -399,6 +399,32 @@ jobs:
           )
           del hw.exe
 
+      - name: Setup ninja
+        uses: seanmiddleditch/gha-setup-ninja@v4
+        if: ${{ steps.setup-fortran.outcome == 'success' }}
+  
+      - name: Test Debug compile (cmake)
+        if: ${{ steps.setup-fortran.outcome == 'success' }}
+        env:
+          FC: ${{ steps.setup-fortran.outputs.fc }}
+          CC: ${{ steps.setup-fortran.outputs.cc }}
+          CXX: ${{ steps.setup-fortran.outputs.cxx }}
+        run: >
+          cmake -G Ninja -B build/Debug -DCMAKE_BUILD_TYPE:STRING=Debug &&
+          cmake --build build/Debug                                     &&
+          ctest --test-dir build/Debug
+
+      - name: Test Release compile (cmake)
+        if: ${{ steps.setup-fortran.outcome == 'success' }}
+        env:
+          FC: ${{ steps.setup-fortran.outputs.fc }}
+          CC: ${{ steps.setup-fortran.outputs.cc }}
+          CXX: ${{ steps.setup-fortran.outputs.cxx }}
+        run: >
+          cmake -G Ninja -B build/Release -DCMAKE_BUILD_TYPE:STRING=Release &&
+          cmake --build build/Release                                       &&
+          ctest --test-dir build/Release
+  
       - name: Create compatibility report
         shell: bash
         run: |
