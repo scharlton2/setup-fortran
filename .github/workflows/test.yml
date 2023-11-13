@@ -200,9 +200,9 @@ jobs:
           FC: ${{ steps.setup-fortran.outputs.fc }}
           CC: ${{ steps.setup-fortran.outputs.cc }}
           CXX: ${{ steps.setup-fortran.outputs.cxx }}
-        run: |
-          cmake -G Ninja -B build
-          cmake --build build
+        run: >
+          cmake -G Ninja -B build &&
+          cmake --build build     &&
           ctest --test-dir build
 
   full_test:
