@@ -1,0 +1,303 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "ninja-cl-ifort",
+      "displayName": "",
+      "description": "",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+      },
+      "environment": {
+        "CC": "cl",
+        "CXX": "cl",
+        "FC": "ifort"
+      }
+    },
+    {
+      "name": "ninja-cl-ifx",
+      "displayName": "",
+      "description": "",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+      },
+      "environment": {
+        "CC": "cl",
+        "CXX": "cl",
+        "FC": "ifx"
+      }
+    },
+    {
+      "name": "ninja-clang-ifort",
+      "displayName": "",
+      "description": "",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+      },
+      "environment": {
+        "CC": "clang",
+        "CXX": "clang++",
+        "FC": "ifort"
+      }
+    },
+    {
+      "name": "ninja-clang-ifx",
+      "displayName": "",
+      "description": "",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+      },
+      "environment": {
+        "CC": "clang",
+        "CXX": "clang++",
+        "FC": "ifx"
+      }
+    },
+    {
+      "name": "ninja-icx-ifort",
+      "displayName": "",
+      "description": "",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+      },
+      "environment": {
+        "CC": "icx",
+        "CXX": "icx",
+        "FC": "ifort"
+      }
+    },
+    {
+      "name": "ninja-icx-ifx",
+      "displayName": "",
+      "description": "",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+      },
+      "environment": {
+        "CC": "icx",
+        "CXX": "icx",
+        "FC": "ifx"
+      }
+    },
+    {
+      "name": "vs2022-cl-ifort",
+      "displayName": "",
+      "description": "",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+      },
+      "environment": {
+      }
+    },
+    {
+      "name": "vs2022-icl-ifort",
+      "displayName": "",
+      "description": "intel-classic compiler",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "generator": "Visual Studio 17 2022",
+      "toolset": "Intel C++ Compiler 19.2",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+      },
+      "environment": {
+      }
+    },
+    {
+      "name": "vs2022-icx-ifort",
+      "displayName": "",
+      "description": "intel compiler",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "generator": "Visual Studio 17 2022",
+      "toolset": "Intel C++ Compiler 2023",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+      },
+      "environment": {
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "ninja-cl-ifort",
+      "configurePreset": "ninja-cl-ifort",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "ninja-cl-ifx",
+      "configurePreset": "ninja-cl-ifx",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "ninja-clang-ifort",
+      "configurePreset": "ninja-clang-ifort"
+    },
+    {
+      "name": "ninja-clang-ifx",
+      "configurePreset": "ninja-clang-ifx"
+    },
+    {
+      "name": "ninja-icx-ifort",
+      "configurePreset": "ninja-icx-ifort"
+    },
+    {
+      "name": "ninja-icx-ifx",
+      "configurePreset": "ninja-icx-ifx"
+    },
+    {
+      "name": "vs2022-cl-ifort",
+      "configurePreset": "vs2022-cl-ifort",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "vs2022-icl-ifort",
+      "configurePreset": "vs2022-icl-ifort",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "vs2022-icx-ifort",
+      "configurePreset": "vs2022-icx-ifort",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "ninja-cl-ifort",
+      "configurePreset": "ninja-cl-ifort",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true},
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "ninja-cl-ifx",
+      "configurePreset": "ninja-cl-ifx",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true},
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "ninja-clang-ifort",
+      "configurePreset": "ninja-clang-ifort",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true}
+    },
+    {
+      "name": "ninja-clang-ifx",
+      "configurePreset": "ninja-clang-ifx",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true}
+    },
+    {
+      "name": "ninja-icx-ifort",
+      "configurePreset": "ninja-icx-ifort",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true}
+    },
+    {
+      "name": "ninja-icx-ifx",
+      "configurePreset": "ninja-icx-ifx",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true}
+    },
+    {
+      "name": "vs2022-cl-ifort",
+      "configurePreset": "vs2022-cl-ifort",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true},
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "vs2022-icl-ifort",
+      "configurePreset": "vs2022-icl-ifort",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true},
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "vs2022-icx-ifort",
+      "configurePreset": "vs2022-icx-ifort",
+      "output": {"outputOnFailure": true},
+      "execution": {"noTestsAction": "error", "stopOnFailure": true},
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    }
+  ],
+  "vendor": {
+    "example.com/ExampleIDE/1.0": {
+      "autoFormat": false
+    }
+  }
+}

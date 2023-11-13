@@ -186,6 +186,25 @@ jobs:
           )
           del hw.exe
 
+      - name: Install ninja
+        if: ${{ steps.setup-fortran.outcome == 'success' && runner.os == 'Linux' }}
+        run: sudo apt-get -y update && sudo apt-get install -y ninja-build
+
+      - name: Install ninja
+        if: ${{ steps.setup-fortran.outcome == 'success' && runner.os == 'macOS' }}
+        run: brew install ninja
+
+      - name: Test compile (cmake)
+        if: ${{ steps.setup-fortran.outcome == 'success'}}
+        env:
+          FC: ${{ steps.setup-fortran.outputs.fc }}
+          CC: ${{ steps.setup-fortran.outputs.cc }}
+          CXX: ${{ steps.setup-fortran.outputs.cxx }}
+        run: |
+          cmake -G Ninja -B build
+          cmake --build build
+          ctest --test-dir build
+
   full_test:
     name: Full compatibility test
     if: github.event_name == 'schedule'
