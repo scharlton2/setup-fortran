@@ -46,12 +46,12 @@ runs:
       run: |
         if [ -z "${{ inputs.cache_key }}" ]; then
           echo "No cache key provided. Generating default key."
-          cache_key="${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ env.date }}"
+          cache_key="${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.version }}-${{ steps.get-date.outputs.date }}"
         else
           cache_key="${{ inputs.cache_key }}"
         fi
         echo "Using cache key: $cache_key"
-        echo "::set-output name=cache_key::$cache_key"
+        echo "cache_key=$cache_key >> "$GITHUB_OUTPUT"
     - name: Restore cache
       if: runner.os == 'Windows' && contains(inputs.compiler, 'intel')
       id: cache
